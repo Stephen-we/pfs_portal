@@ -1,3 +1,4 @@
+// server/src/routes/leads.js
 import express from "express";
 import Lead from "../models/Lead.js";
 import Case from "../models/Case.js";
@@ -65,9 +66,25 @@ router.get("/:id", auth, async (req, res, next) => {
 });
 
 /* ================================
-   ✅ UPDATE Lead
+   ✅ PUT Lead (Full Update)
 ================================ */
 router.put("/:id", auth, async (req, res, next) => {
+  try {
+    const updated = await Lead.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!updated) return res.status(404).json({ message: "Lead not found" });
+    res.json(updated);
+  } catch (e) {
+    next(e);
+  }
+});
+
+/* ================================
+   ✅ PATCH Lead (Partial Update) - NEW ROUTE
+================================ */
+router.patch("/:id", auth, async (req, res, next) => {
   try {
     const updated = await Lead.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
