@@ -77,4 +77,7 @@ Thumbs.db
 
 # DynamoDB Local files
 .dynamodb/
-EOF
+EOFnode_modules/
+.env
+dist/
+build/
